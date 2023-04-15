@@ -96,19 +96,21 @@ class PrelaunchCheckPage(tk.Frame):
         self.button = ttk.Button(self, text="Start Prelaunch Check", command=self.retry_prelaunch_check)
         self.button.pack()
 
-    def submit_api_keys(self):
-        openai_api_key = self.openai_api_key_entry.get().strip()
-        google_api_key = self.google_api_key_entry.get().strip()
+def submit_api_keys(self):
+    openai_api_key = self.openai_api_key_entry.get().strip()
+    google_api_key = self.google_api_key_entry.get().strip()
 
-        if not openai_api_key or not google_api_key:
-            self.error_label.config(text="Both API keys are required.")
-            return
+    if not openai_api_key or not google_api_key:
+        self.error_label.config(text="Both API keys are required.")
+        return
 
-        try:
-            check_api_keys(set_api_keys_callback=(lambda: (openai_api_key, google_api_key)))
-            self.error_label.config(text="API keys saved successfully.", foreground="green")
-        except RuntimeError as e:
-            self.error_label.config(text=str(e), foreground="red")
+    try:
+        check_api_keys(set_api_keys_callback=(lambda: (openai_api_key, google_api_key)))
+        self.error_label.config(text="API keys saved successfully.", foreground="green")
+        self.openai_api_key = openai_api_key
+        self.google_api_key = google_api_key
+    except RuntimeError as e:
+        self.error_label.config(text=str(e), foreground="red")
     
     def retry_prelaunch_check(self):
         try:
@@ -117,7 +119,8 @@ class PrelaunchCheckPage(tk.Frame):
             self.controller.show_frame(ModelSelectionPage)
         except RuntimeError as e:
             self.error_label.config(text=str(e), foreground="red")
-                        
+
+                       
 def launch_gui():
     app = AIApp()
     app.mainloop()
