@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="1.243" timestamp="2023-04-15T08:24:25.259712" hostname="DESKTOP-IJ3SODT"><testcase classname="test_script.TestAIApp" name="test_check_api_keys" file="test_script.py" line="15" time="0.001"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+Testing check_api_keys
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="test_script.TestAIApp" name="test_check_environment" file="test_script.py" line="22" time="0.005"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+Testing check_environment
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="test_script.TestAIApp" name="test_gui_launch" file="test_script.py" line="31" time="1.191"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+Testing GUI launch
+Initializing AI Agent Application...Initializing AI Agent Application...
+
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="test_script.TestAIApp" name="test_memory_manager" file="test_script.py" line="26" time="0.001"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+Testing MemoryManager
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="test_script.TestAIApp" name="test_prelaunch_check" file="test_script.py" line="10" time="0.000"><failure message="TypeError: check_api_keys() takes 0 positional arguments but 1 was given">self = &lt;test_script.TestAIApp testMethod=test_prelaunch_check&gt;
+
+    def test_prelaunch_check(self):
+        print("Testing prelaunch_check")
+        with self.assertRaises(RuntimeError):
+&gt;           prelaunch_check()
+
+test_script.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def prelaunch_check(set_api_keys_callback=None):
+&gt;       check_api_keys(set_api_keys_callback)
+E       TypeError: check_api_keys() takes 0 positional arguments but 1 was given
+
+prelaunch_checks.py:10: TypeError</failure><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+Testing prelaunch_check
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase></testsuite></testsuites>

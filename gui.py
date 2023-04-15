@@ -1,13 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 from prelaunch_checks import prelaunch_check, check_api_keys, check_environment
+from api_key_manager import save_api_keys, validate_api_keys
 
 class AIApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         print("Initializing AI Agent Application...")
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("AI Agent Application")
-        self.geometry("300x150")
 
         self.container = tk.Frame(self)
         self.container.pack(side="top", fill="both", expand=True)
@@ -26,6 +26,8 @@ class AIApp(tk.Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+        self.update_idletasks()
+        self.geometry("{}x{}".format(frame.winfo_reqwidth(), frame.winfo_reqheight()))
 
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -96,22 +98,20 @@ class PrelaunchCheckPage(tk.Frame):
         self.button = ttk.Button(self, text="Start Prelaunch Check", command=self.retry_prelaunch_check)
         self.button.pack()
 
-def submit_api_keys(self):
-    openai_api_key = self.openai_api_key_entry.get().strip()
-    google_api_key = self.google_api_key_entry.get().strip()
+    def submit_api_keys(self):
+        openai_api_key = self.openai_api_key_entry.get().strip()
+        google_api_key = self.google_api_key_entry.get().strip()
 
-    if not openai_api_key or not google_api_key:
-        self.error_label.config(text="Both API keys are required.")
-        return
+        if not validate_api_keys(openai_api_key, google_api_key):
+            self.error_label.config(text="Both API keys are required.")
+            return
 
-    try:
-        check_api_keys(set_api_keys_callback=(lambda: (openai_api_key, google_api_key)))
-        self.error_label.config(text="API keys saved successfully.", foreground="green")
-        self.openai_api_key = openai_api_key
-        self.google_api_key = google_api_key
-    except RuntimeError as e:
-        self.error_label.config(text=str(e), foreground="red")
-    
+        try:
+            save_api_keys(openai_api_key, google_api_key)
+            self.error_label.config(text="API keys saved successfully.", foreground="green")
+        except Exception as e:
+            self.error_label.config(text=str(e), foreground="red")
+            
     def retry_prelaunch_check(self):
         try:
             check_api_keys()
