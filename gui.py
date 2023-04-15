@@ -4,6 +4,7 @@ from prelaunch_checks import prelaunch_check, check_api_keys, check_environment
 
 class AIApp(tk.Tk):
     def __init__(self, *args, **kwargs):
+        print("Initializing AI Agent Application...")
         tk.Tk.__init__(self, *args, **kwargs)
         self.title("AI Agent Application")
         self.geometry("300x150")
@@ -33,7 +34,7 @@ class StartPage(tk.Frame):
         label.pack(pady=10, padx=10)
 
         button = ttk.Button(self, text="Next",
-                            command=lambda: controller.show_frame(ModelSelectionPage))
+        command=lambda: controller.show_frame(ModelSelectionPage))
         button.pack()
 
 class ModelSelectionPage(tk.Frame):
@@ -89,10 +90,13 @@ class PrelaunchCheckPage(tk.Frame):
         self.error_label = ttk.Label(self, text="", foreground="red")
         self.error_label.pack(pady=10, padx=10)
 
+        self.submit_button = ttk.Button(self, text="Submit API Keys", command=self.submit_api_keys)
+        self.submit_button.pack(pady=10)
+
         self.button = ttk.Button(self, text="Start Prelaunch Check", command=self.retry_prelaunch_check)
         self.button.pack()
 
-    def retry_prelaunch_check(self):
+    def submit_api_keys(self):
         openai_api_key = self.openai_api_key_entry.get().strip()
         google_api_key = self.google_api_key_entry.get().strip()
 
@@ -102,10 +106,17 @@ class PrelaunchCheckPage(tk.Frame):
 
         try:
             check_api_keys(set_api_keys_callback=(lambda: (openai_api_key, google_api_key)))
+            self.error_label.config(text="API keys saved successfully.", foreground="green")
+        except RuntimeError as e:
+            self.error_label.config(text=str(e), foreground="red")
+    
+    def retry_prelaunch_check(self):
+        try:
+            check_api_keys()
             check_environment()
             self.controller.show_frame(ModelSelectionPage)
         except RuntimeError as e:
-            self.error_label.config(text=str(e))
+            self.error_label.config(text=str(e), foreground="red")
                         
 def launch_gui():
     app = AIApp()
